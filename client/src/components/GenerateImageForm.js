@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Button from "./Button";
 import TextInput from "./TextInput";
 import { AutoAwesome, CreateRounded } from "@mui/icons-material";
-// import { CreatePost, GenerateAIImage } from "../api";
+import { CreatePost, GenerateAIImage } from "../api";
 
 const Form = styled.div`
   flex: 1;
@@ -53,33 +53,33 @@ const GenerateImageForm = ({
 }) => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  // const generateImageFun = async () => {
-  //   setGenerateImageLoading(true);
-  //   await GenerateAIImage({ prompt: post.prompt })
-  //     .then((res) => {
-  //       setPost({
-  //         ...post,
-  //         photo: `data:image/jpge;base64,${res?.data?.photo}`,
-  //       });
-  //       setGenerateImageLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       setError(error?.response?.data?.message);
-  //       setGenerateImageLoading(false);
-  //     });
-  // };
-  // const createPostFun = async () => {
-  //   setCreatePostLoading(true);
-  //   await CreatePost(post)
-  //     .then((res) => {
-  //       setCreatePostLoading(false);
-  //       navigate("/");
-  //     })
-  //     .catch((error) => {
-  //       setError(error?.response?.data?.message);
-  //       setCreatePostLoading(false);
-  //     });
-  // };
+  const generateImageFun = async () => {
+    setGenerateImageLoading(true);
+    await GenerateAIImage({ prompt: post.prompt })
+      .then((res) => {
+        setPost({
+          ...post,
+          photo: `data:image/jpge;base64,${res?.data?.photo}`,
+        });
+        setGenerateImageLoading(false);
+      })
+      .catch((error) => {
+        setError(error?.response?.data?.message);
+        setGenerateImageLoading(false);
+      });
+  };
+  const createPostFun = async () => {
+    setCreatePostLoading(true);
+    await CreatePost(post)
+      .then((res) => {
+        setCreatePostLoading(false);
+        navigate("/");
+      })
+      .catch((error) => {
+        setError(error?.response?.data?.message);
+        setCreatePostLoading(false);
+      });
+  };
   return (
     <Form>
       <Top>
@@ -115,7 +115,7 @@ const GenerateImageForm = ({
           leftIcon={<AutoAwesome />}
           isLoading={generateImageLoading}
           isDisabled={post.prompt === ""}
-          // onClick={() => generateImageFun()}
+          onClick={() => generateImageFun()}
         />
         <Button
           text="Post Image"
@@ -126,7 +126,7 @@ const GenerateImageForm = ({
           isDisabled={
             post.name === "" || post.prompt === "" || post.photo === ""
           }
-          // onClick={() => createPostFun()}
+          onClick={() => createPostFun()}
         />
       </Actions>
     </Form>
